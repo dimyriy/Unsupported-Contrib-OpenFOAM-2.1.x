@@ -41,6 +41,7 @@ Description
         "Turbulence Modeling in Rotating and Curved Channels:
         Assessing the Spalart-Shur Correction"
         AIAA Journal Vol. 38, No. 5, 2000, pp. 784-792.
+        http://arc.aiaa.org/doi/abs/10.2514/2.1058
     \endverbatim
 
     Note that this implementation is written in terms of alpha diffusion
