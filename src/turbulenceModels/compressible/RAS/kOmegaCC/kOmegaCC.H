@@ -2,11 +2,11 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2013 Dmitry Bogdanov
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is derivative work of OpenFOAM.
 
     OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::compressible::RASModels::kOmegaCC
+    Foam::compressible::RASModels::kOmegaSSTCC
 
 Description
     Implementation of the k-omega-SST turbulence model for compressible flows.
@@ -62,7 +62,7 @@ Description
 
     The default model coefficients correspond to the following:
     \verbatim
-        kOmegaCCCoeffs
+        kOmegaSSTCCCoeffs
         {
             alphaK1     0.85034;
             alphaK2     1.0;
@@ -83,12 +83,12 @@ Description
     \endverbatim
 
 SourceFiles
-    kOmegaCC.C
+    kOmegaSSTCC.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef compressiblekOmegaCC_H
-#define compressiblekOmegaCC_H
+#ifndef compressiblekOmegaSSTCC_H
+#define compressiblekOmegaSSTCC_H
 
 #include "RASModel.H"
 #include "wallDist.H"
@@ -103,10 +103,10 @@ namespace RASModels
 {
 
 /*---------------------------------------------------------------------------*\
-                          Class kOmegaCC Declaration
+                          Class kOmegaSSTCC Declaration
 \*---------------------------------------------------------------------------*/
 
-class kOmegaCC
+class kOmegaSSTCC
 :
     public RASModel
 {
@@ -191,7 +191,7 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("kOmegaCC");
+    TypeName("kOmegaSSTCC");
 
 
     // Constructors
@@ -209,7 +209,7 @@ public:
 
 
     //- Destructor
-    virtual ~kOmegaCC()
+    virtual ~kOmegaSSTCC()
     {}
 
 
@@ -250,6 +250,7 @@ public:
             return k_;
         }
 
+        //- Return the turbulence specific dissipation rate
         virtual tmp<volScalarField> omega() const
         {
             return omega_;

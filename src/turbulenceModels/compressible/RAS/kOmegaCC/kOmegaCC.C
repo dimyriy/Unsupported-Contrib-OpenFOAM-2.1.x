@@ -2,11 +2,11 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2013  Dmitry Bogdanov
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is derivative work of OpenFOAM.
 
     OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "kOmegaCC.H"
+#include "kOmegaSSTCC.H"
 #include "addToRunTimeSelectionTable.H"
 
 #include "backwardsCompatibilityWallFunctions.H"
@@ -39,12 +39,12 @@ namespace RASModels
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-defineTypeNameAndDebug(kOmegaCC, 0);
-addToRunTimeSelectionTable(RASModel, kOmegaCC, dictionary);
+defineTypeNameAndDebug(kOmegaSSTCC, 0);
+addToRunTimeSelectionTable(RASModel, kOmegaSSTCC, dictionary);
 
 // * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * * //
 
-tmp<volScalarField> kOmegaCC::F1(const volScalarField& CDkOmega) const
+tmp<volScalarField> kOmegaSSTCC::F1(const volScalarField& CDkOmega) const
 {
     tmp<volScalarField> CDkOmegaPlus = max
     (
@@ -69,7 +69,7 @@ tmp<volScalarField> kOmegaCC::F1(const volScalarField& CDkOmega) const
     return tanh(pow4(arg1));
 }
 
-tmp<volScalarField> kOmegaCC::F2() const
+tmp<volScalarField> kOmegaSSTCC::F2() const
 {
     tmp<volScalarField> arg2 = min
     (
@@ -87,7 +87,7 @@ tmp<volScalarField> kOmegaCC::F2() const
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-kOmegaCC::kOmegaCC
+kOmegaSSTCC::kOmegaSSTCC
 (
     const volScalarField& rho,
     const volVectorField& U,
@@ -309,7 +309,7 @@ kOmegaCC::kOmegaCC
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-tmp<volSymmTensorField> kOmegaCC::R() const
+tmp<volSymmTensorField> kOmegaSSTCC::R() const
 {
     return tmp<volSymmTensorField>
     (
@@ -330,7 +330,7 @@ tmp<volSymmTensorField> kOmegaCC::R() const
 }
 
 
-tmp<volSymmTensorField> kOmegaCC::devRhoReff() const
+tmp<volSymmTensorField> kOmegaSSTCC::devRhoReff() const
 {
     return tmp<volSymmTensorField>
     (
@@ -350,7 +350,7 @@ tmp<volSymmTensorField> kOmegaCC::devRhoReff() const
 }
 
 
-tmp<fvVectorMatrix> kOmegaCC::divDevRhoReff(volVectorField& U) const
+tmp<fvVectorMatrix> kOmegaSSTCC::divDevRhoReff(volVectorField& U) const
 {
     return
     (
@@ -359,7 +359,7 @@ tmp<fvVectorMatrix> kOmegaCC::divDevRhoReff(volVectorField& U) const
 }
 
 
-bool kOmegaCC::read()
+bool kOmegaSSTCC::read()
 {
     if (RASModel::read())
     {
@@ -385,7 +385,7 @@ bool kOmegaCC::read()
 }
 
 
-void kOmegaCC::correct()
+void kOmegaSSTCC::correct()
 {
     if (!turbulence_)
     {
