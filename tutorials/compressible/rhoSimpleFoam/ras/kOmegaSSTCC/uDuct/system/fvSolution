@@ -1,0 +1,148 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "(rho|G)"
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-9;
+        relTol          0;
+    }
+/*
+    U
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-9;
+        relTol          0;
+    }
+
+    p
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-09;
+        relTol          0;
+    }
+
+    h
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-09;
+        relTol          0;
+    }
+
+    R
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-09;
+        relTol          0;
+    }
+
+    k
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-09;
+        relTol          0;
+    }
+
+    epsilon
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-09;
+        relTol          0;
+    }
+
+    omega
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-09;
+        relTol          0;
+    }
+*/
+    "(p|pFinal)"
+    {
+        solver GAMG;
+        smoother GaussSeidel;
+        nPreSweeps 0;
+        nPostSweeps 1;
+        tolerance 1e-09;
+        relTol 0;
+        nCellsInCoarsestLevel 10;
+        cacheAgglomeration true;
+        agglomerator faceAreaPair;
+        mergeLevels 1;
+        maxIter 15;
+    }
+    "(U|UFinal|k|omega|epsilon|h|hFinal|R)"
+    {
+        solver      smoothSolver;
+        smoother    GaussSeidel;
+        nSweeps     2;
+        relTol      0;
+        tolerance   1e-09;
+        maxIter     20;
+    }
+}
+
+PISO
+{
+    nCorrectors     4;
+    nNonOrthogonalCorrectors 2;
+    momentumPredictor yes;
+}
+PIMPLE
+{
+    nOuterCorrectors 50;
+    nCorrectors     1;
+    nNonOrthogonalCorrectors 0;
+    momentumPredictor yes;
+    pMin            pMin [ 1 -1 -2 0 0 0 0 ] 90000;
+    rhoMin        rhoMin [ 1 -3 0 0 0 ] 0.5;
+    rhoMax        rhoMax [ 1 -3 0 0 0 ] 2.0;
+}
+SIMPLE
+{
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 2;
+    momentumPredictor yes;
+    rhoMin rhoMin [1 -3 0 0 0 0 0] 1.0;
+    rhoMax rhoMax [1 -3 0 0 0 0 0] 2.0;
+}
+residuals
+{
+    residualsPrint false;
+}
+relaxationFactors  //switch this steady<-->unnsteady
+{
+    rho     0.05;
+    p       0.7;
+    U       0.3;
+    h       0.5;
+    pFinal  0.5;
+    k       0.5;
+    omega   0.5;
+}
+
+// ************************************************************************* //

@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+11
+(
+    outlet
+    {
+        type            patch;
+        nFaces          50;
+        startFace       29650;
+    }
+    inlet
+    {
+        type            patch;
+        nFaces          50;
+        startFace       29700;
+    }
+    upInnerTurnWalls
+    {
+        type            wall;
+        nFaces          50;
+        startFace       29750;
+    }
+    downInnerTurnWalls
+    {
+        type            wall;
+        nFaces          50;
+        startFace       29800;
+    }
+    downOuterTurnWalls
+    {
+        type            wall;
+        nFaces          50;
+        startFace       29850;
+    }
+    upOuterTurnWalls
+    {
+        type            wall;
+        nFaces          50;
+        startFace       29900;
+    }
+    downInnerWalls
+    {
+        type            wall;
+        nFaces          100;
+        startFace       29950;
+    }
+    upInnerWalls
+    {
+        type            wall;
+        nFaces          100;
+        startFace       30050;
+    }
+    downOuterWalls
+    {
+        type            wall;
+        nFaces          100;
+        startFace       30150;
+    }
+    upOuterWalls
+    {
+        type            wall;
+        nFaces          100;
+        startFace       30250;
+    }
+    frontAndBackPlanes
+    {
+        type            empty;
+        nFaces          30000;
+        startFace       30350;
+    }
+)
+
+// ************************************************************************* //
