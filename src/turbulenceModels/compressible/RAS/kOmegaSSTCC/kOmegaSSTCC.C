@@ -311,7 +311,7 @@ void kOmegaSSTCC::correct()
     volScalarField rStar = sqrt(symInnerProduct/asymInnerProduct);
     volScalarField G("RASModel::G", mut_*GbyMu);
     tgradU.clear();
-    volScalarField D = sqrt(max(asymInnerProduct, 0.09*omega_*omega_));
+    volScalarField D = sqrt(max(symInnerProduct, 0.09*omega_*omega_));
     omega_.boundaryField().updateCoeffs();
     tmp<volSymmTensorField> divS = fvc::ddt(tSymm()) + fvc::div(surfaceScalarField("phiU",phi_/fvc::interpolate(rho_)), tSymm());
     volScalarField rT = tSkew().component(0)*tSymm().component(0)*divS().component(0) +
