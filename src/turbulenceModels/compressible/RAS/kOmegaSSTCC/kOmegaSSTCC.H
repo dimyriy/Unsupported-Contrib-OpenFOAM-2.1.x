@@ -51,7 +51,7 @@ Description
     consistent with the blending of the k-epsilon and k-omega models.
 
     Also note that the error in the last term of equation (2) relating to
-    sigma has been corrected.
+    sigma has been applied.
 
     Wall-functions are applied in this implementation by using equations (14)
     to specify the near-wall omega as appropriate.
@@ -126,23 +126,27 @@ public:
 
     // Constructors
 
-        //- Construct from components
-        kOmegaSSTCC
-        (
-            const volScalarField& rho,
-            const volVectorField& U,
-            const surfaceScalarField& phi,
-            const basicThermo& thermophysicalModel,
-            const word& turbulenceModelName = turbulenceModel::typeName,
-            const word& modelName = typeName
-        );
-
+		//- Construct from components
+		kOmegaSSTCC
+		(
+		    const volScalarField& rho,
+		    const volVectorField& U,
+		    const surfaceScalarField& phi,
+		    const basicThermo& thermophysicalModel,
+		    const word& turbulenceModelName = turbulenceModel::typeName,
+		    const word& modelName = typeName
+		);
 
     //- Destructor
     virtual ~kOmegaSSTCC()
     {}
-};
 
+
+	// Member Functions
+
+	    //- Solve the turbulence equations and correct the turbulence viscosity
+		virtual void correct();
+};
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
