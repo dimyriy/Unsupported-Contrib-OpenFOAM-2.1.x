@@ -44,6 +44,14 @@ Description
         http://arc.aiaa.org/doi/abs/10.2514/2.1058
     \endverbatim
 
+    and reformulated according to the SST model in:
+    \verbatim
+        Menter F.R. Smirnov P.E.
+        "Sensitization of the sst turbulence model to rotation and curvature
+        by applying the spalart–shur correction term"
+        Journ. of Turbomachinery, 131(4), 2009.
+    \endverbatim
+
     Note that this implementation is written in terms of alpha diffusion
     coefficients rather than the more traditional sigma (alpha = 1/sigma) so
     that the blending can be applied to all coefficuients in a consistent

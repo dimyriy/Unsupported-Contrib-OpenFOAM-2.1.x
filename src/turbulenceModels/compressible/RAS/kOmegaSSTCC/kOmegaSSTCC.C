@@ -57,7 +57,7 @@ kOmegaSSTCC::kOmegaSSTCC
     const word& modelName
 )
 :
-	kOmegaSST(rho, U, phi, thermophysicalModel, turbulenceModelName, modelName),
+    kOmegaSST(rho, U, phi, thermophysicalModel, turbulenceModelName, modelName),
 
     cr1_
     (
@@ -146,60 +146,87 @@ void kOmegaSSTCC::correct()
     tmp<volTensorField> tSkew = skew(tgradU());
     tmp<volSymmTensorField> tSymm = symm(tgradU());
     volScalarField symInnerProduct = 2. * tSymm() && tSymm();
-    volScalarField asymInnerProduct = max(2. * tSkew() && tSkew(), dimensionedScalar("1e-16", dimensionSet(0, 0, -2, 0, 0), 1e-10) );
+
+    volScalarField asymInnerProduct =
+    (
+        max(2.0*tSkew()&&tSkew(),
+        dimensionedScalar("0", dimensionSet(0, 0, -2, 0, 0), 0.0))
+    );
+
     volScalarField S2(2*magSqr(symm(tgradU())));
     volScalarField GbyMu((tgradU() && dev(twoSymm(tgradU()))));
     volScalarField rStar = sqrt(symInnerProduct/asymInnerProduct);
     volScalarField G("RASModel::G", mut_*GbyMu);
     tgradU.clear();
+
     volScalarField D = sqrt(max(symInnerProduct, 0.09*omega_*omega_));
     omega_.boundaryField().updateCoeffs();
-    tmp<volSymmTensorField> divS = fvc::ddt(tSymm()) + fvc::div(surfaceScalarField("phiU",phi_/fvc::interpolate(rho_)), tSymm());
-    volScalarField rT = tSkew().component(0)*tSymm().component(0)*divS().component(0) +
-                            tSkew().component(0)*tSymm().component(1)*divS().component(1) +
-                            tSkew().component(0)*tSymm().component(2)*divS().component(2) +
-                            tSkew().component(3)*tSymm().component(0)*divS().component(3) +
-                            tSkew().component(3)*tSymm().component(1)*divS().component(4) +
-                            tSkew().component(3)*tSymm().component(2)*divS().component(5) +
-                            tSkew().component(6)*tSymm().component(0)*divS().component(6) +
-                            tSkew().component(6)*tSymm().component(1)*divS().component(7) +
-                            tSkew().component(6)*tSymm().component(2)*divS().component(8) +
-                            tSkew().component(1)*tSymm().component(3)*divS().component(0) +
-                            tSkew().component(1)*tSymm().component(4)*divS().component(1) +
-                            tSkew().component(1)*tSymm().component(5)*divS().component(2) +
-                            tSkew().component(4)*tSymm().component(3)*divS().component(3) +
-                            tSkew().component(4)*tSymm().component(4)*divS().component(4) +
-                            tSkew().component(4)*tSymm().component(5)*divS().component(5) +
-                            tSkew().component(7)*tSymm().component(3)*divS().component(6) +
-                            tSkew().component(7)*tSymm().component(4)*divS().component(7) +
-                            tSkew().component(7)*tSymm().component(5)*divS().component(8) +
-                            tSkew().component(2)*tSymm().component(6)*divS().component(0) +
-                            tSkew().component(2)*tSymm().component(7)*divS().component(1) +
-                            tSkew().component(2)*tSymm().component(8)*divS().component(2) +
-                            tSkew().component(7)*tSymm().component(6)*divS().component(3) +
-                            tSkew().component(7)*tSymm().component(7)*divS().component(4) +
-                            tSkew().component(7)*tSymm().component(8)*divS().component(5) +
-                            tSkew().component(8)*tSymm().component(6)*divS().component(6) +
-                            tSkew().component(8)*tSymm().component(7)*divS().component(7) +
-                            tSkew().component(8)*tSymm().component(8)*divS().component(8);
+
+    tmp<volSymmTensorField> divS =
+    (
+        fvc::ddt(tSymm())
+       +fvc::div
+        (
+            surfaceScalarField("phiU",phi_/fvc::interpolate(rho_)), tSymm()
+        )
+    );
+
+    volScalarField rT =
+    (
+        tSkew().component(0)*tSymm().component(0)*divS().component(0)
+      + tSkew().component(0)*tSymm().component(1)*divS().component(1)
+      + tSkew().component(0)*tSymm().component(2)*divS().component(2)
+      + tSkew().component(3)*tSymm().component(0)*divS().component(3)
+      + tSkew().component(3)*tSymm().component(1)*divS().component(4)
+      + tSkew().component(3)*tSymm().component(2)*divS().component(5)
+      + tSkew().component(6)*tSymm().component(0)*divS().component(6)
+      + tSkew().component(6)*tSymm().component(1)*divS().component(7)
+      + tSkew().component(6)*tSymm().component(2)*divS().component(8)
+      + tSkew().component(1)*tSymm().component(3)*divS().component(0)
+      + tSkew().component(1)*tSymm().component(4)*divS().component(1)
+      + tSkew().component(1)*tSymm().component(5)*divS().component(2)
+      + tSkew().component(4)*tSymm().component(3)*divS().component(3)
+      + tSkew().component(4)*tSymm().component(4)*divS().component(4)
+      + tSkew().component(4)*tSymm().component(5)*divS().component(5)
+      + tSkew().component(7)*tSymm().component(3)*divS().component(6)
+      + tSkew().component(7)*tSymm().component(4)*divS().component(7)
+      + tSkew().component(7)*tSymm().component(5)*divS().component(8)
+      + tSkew().component(2)*tSymm().component(6)*divS().component(0)
+      + tSkew().component(2)*tSymm().component(7)*divS().component(1)
+      + tSkew().component(2)*tSymm().component(8)*divS().component(2)
+      + tSkew().component(7)*tSymm().component(6)*divS().component(3)
+      + tSkew().component(7)*tSymm().component(7)*divS().component(4)
+      + tSkew().component(7)*tSymm().component(8)*divS().component(5)
+      + tSkew().component(8)*tSymm().component(6)*divS().component(6)
+      + tSkew().component(8)*tSymm().component(7)*divS().component(7)
+      + tSkew().component(8)*tSymm().component(8)*divS().component(8)
+    );
     divS.clear();
     tSkew.clear();
     tSymm.clear();
-    volScalarField rTilda = 2. * rT/sqrt(asymInnerProduct)/D/D/D;
-    volScalarField Frot(
-        IOobject(
+
+    volScalarField rTilda = 2.0*rT/sqrt(asymInnerProduct)/D/D/D;
+
+    volScalarField Frot
+    (
+        IOobject
+        (
             "Frot",
             runTime_.timeName(),
             mesh_,
             IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),
-        max(min((scalar(1) + cr1_)*2*rStar/(scalar(1)+rStar)*(scalar(1)-cr3_*atan(cr2_*rTilda))-cr1_, scalar(1.25)), scalar(0))
+        max
+        (
+            min
+            (
+                (scalar(1.0)+cr1_)*2.0*rStar/(scalar(1)+rStar)*(scalar(1.0)
+               -cr3_*atan(cr2_*rTilda))-cr1_,
+               scalar(1.25)
+            ),
+        scalar(0.0))
     );
-    if(runTime_.outputTime())
-    {
-        Frot.write();
-    }
     rStar.clear();
     rTilda.clear();
     rT.clear();

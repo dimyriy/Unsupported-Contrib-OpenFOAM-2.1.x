@@ -1,0 +1,3 @@
+Numerical simulation of turbulence flow of air in U-duct for the Monson et al. experimental data (can be found in Monson D, Seegmiller H, McConnaughet P and Chen Y 1990 AIAA Paper 21) using k-ω SST turbulence model with curvature correction term formulated in Spalart P and Shur M 1997 Aerospace Science Technology 15.
+Results compared with Fluent simulation and Monson experimental data can be found in Bogdanov, Ponyaev "Numerical simulation of turbulent flow in cyclonic separator"
+Dmitry Bogdanov, Division of Plasma Physics, Atomic Physics and Astrophysics, Ioffe Physical Technical Institute, 26 Polytekhnicheskaya, St Petersburg 194021, Russian Federation.
