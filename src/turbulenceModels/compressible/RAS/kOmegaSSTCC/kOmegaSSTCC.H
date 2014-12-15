@@ -52,6 +52,13 @@ Description
         Journ. of Turbomachinery, 131(4), 2009.
     \endverbatim
 
+    Validation of the model can be found in:
+    \verbatim
+        Bogdanov D. Ponyaev S.
+        "Numerical simulation of turbulent flow in a cyclonic separator"
+        Journ. of Physics, COnference Series, Vol. 572, 2014, 012056
+        http://iopscience.iop.org/1742-6596/572/1/012056/
+    \endverbatim
     Note that this implementation is written in terms of alpha diffusion
     coefficients rather than the more traditional sigma (alpha = 1/sigma) so
     that the blending can be applied to all coefficuients in a consistent
